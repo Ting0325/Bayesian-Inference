@@ -6,6 +6,10 @@ import java.util.Scanner;
 
 public class Driver {
 	public static void main(String [] args) throws FileNotFoundException {
+		Probability pTest = new Probability(4.98,0.35);
+		//System.out.println(pTest.probability(5));
+		//System.out.println(Math.exp((-1/2)*Math.pow(((5-pTest.mean)/pTest.stdDiv),2)));
+		//System.out.println( (-1/2)*Math.exp(Math.pow(((5-pTest.mean)/pTest.stdDiv),2)/**(-1.0/2)*/));
 		Scanner sc = new Scanner(new File("wine.txt"));
 		Scanner scIn = new Scanner(System.in);
 		/*List of Wine instances*/
@@ -62,9 +66,9 @@ public class Driver {
 		}
 		//System.out.print(list);
 		//get proir probilities
-		prior1 = 1.0/3;
-		prior2 = 1.0/3;
-		prior3 = 1.0/3;
+		prior1 = 59.0/178;//1.0/3;
+		prior2 = 71.0/178;//1.0/3;
+		prior3 = 47.0/178;//1.0/3;
 		//get joint probalities
 		for(int i = 1; i <=13;i++) {
 			List data = substanceData(list, i, 0, 58);
@@ -88,42 +92,101 @@ public class Driver {
 		//inference
 		System.out.println("Start inference ,plz input data");
 		//get input data
-		
+		int count = 0;
+		int correct = 0;
 		while(true) {
+			count++;
+			prior1 = 1.0/3;
+			prior2 = 1.0/3;
+			prior3 = 1.0/3;
 			double[] inputData = new double[13];
+			Wine input = list.get(count);
+			/*
 			for(int i = 0; i < 13;i++) {
 				inputData[i] = scIn.nextDouble();
 			}
+			*/
+			inputData[0] = input.Alcohol;
+			inputData[1] = input.Malic;
+			inputData[2] = input.Ash;
+			inputData[3] = input.Alcalinity;
+			inputData[4] = input.Magnesium;
+			inputData[5] = input.phenols;
+			inputData[6] = input.Flavanoids;
+			inputData[7] = input.Nonflavanoid;
+			inputData[8] = input.Proanthocyanins;
+			inputData[9] = input.Color;
+			inputData[10] = input.Hue;
+			inputData[11] = input.OD280;
+			inputData[12] = input.Proline;
+			//System.out.println("\ninput data");
+			for(int i = 0; i < 13;i++) {
+				//System.out.print(inputData[i]+" ");
+			}
 			//get probability for 1
-			System.out.println("\n1:");
+			//System.out.println("\n1:");
+			//debug
+			//System.out.println("debug");
+			//System.out.println(Math.exp((-1/2)*Math.pow(((inputData[12]-type1Joint.get(12).mean)/type1Joint.get(12).stdDiv),2)));
 			for(int i = 0;i < 13;i++) {
-				prior1 *= (type1Joint.get(i).probability(inputData[i])/substanceProb.get(i).probability(inputData[i]));
-				//System.out.print(type1Joint.get(i).probability(inputData[i])+" ");
+				//prior1 *= (type1Joint.get(i).probability(inputData[i])/substanceProb.get(i).probability(inputData[i]));
+				double p1 = type1Joint.get(i).probability(inputData[i]);
+				double p2 = type2Joint.get(i).probability(inputData[i]);
+				double p3 = type3Joint.get(i).probability(inputData[i]);
+				prior1 *= p1;///(p1+p2+p3);
+				//System.out.print(p1+" ");
 			}
 			//get probability for 2
-			System.out.println("\n2:");
+			//System.out.println("\n2:");
 			for(int i = 0;i < 13;i++) {
-				prior2 *= (type2Joint.get(i).probability(inputData[i])/substanceProb.get(i).probability(inputData[i]));
-				//System.out.print(type2Joint.get(i).probability(inputData[i])+" ");
+				double p1 = type1Joint.get(i).probability(inputData[i]);
+				double p2 = type2Joint.get(i).probability(inputData[i]);
+				double p3 = type3Joint.get(i).probability(inputData[i]);
+				prior2 *= p2;///(p1+p2+p3);
+				//prior2 *= (type2Joint.get(i).probability(inputData[i])/substanceProb.get(i).probability(inputData[i]));
+				//System.out.print(p2+" ");
 			}
 			//get probability for 3
-			System.out.println("\n3:");
+			//System.out.println("\n3:");
 			for(int i = 0;i < 13;i++) {
-				prior3 *= (type3Joint.get(i).probability(inputData[i])/substanceProb.get(i).probability(inputData[i]));
-				//System.out.print(type3Joint.get(i).probability(inputData[i])+" ");
+				double p1 = type1Joint.get(i).probability(inputData[i]);
+				double p2 = type2Joint.get(i).probability(inputData[i]);
+				double p3 = type3Joint.get(i).probability(inputData[i]);
+				prior3 *= p3;///(p1+p2+p3);
+				//prior3 *= (type3Joint.get(i).probability(inputData[i])/substanceProb.get(i).probability(inputData[i]));
+				//System.out.print(p3+" ");
 			}
 			
-			System.out.println("\nprior1: "+prior1);
-			System.out.println("prior2: "+prior2);
-			System.out.println("prior3: "+prior3);
+			//System.out.println("\nprior1: "+prior1);
+			//System.out.println("prior2: "+prior2);
+			//System.out.println("prior3: "+prior3);
 			if(prior1 > prior2 && prior1 > prior3) {
-				System.out.print("catagory 1");
+				System.out.print("\ncatagory "+input.type+" prediction: 1");
+				if(input.type == 1) {
+					correct ++;
+					System.out.print(" correct");
+				}else
+					System.out.print(" wrong");
+
 			}else if(prior2 > prior1 && prior2 > prior3) {
-				System.out.print("catagory 2");
+				System.out.print("\ncatagory "+input.type+" prediction: 2");
+				if(input.type == 2) {
+					correct ++;
+					System.out.print(" correct");
+				}else
+					System.out.print(" wrong");
 			}else {
-				System.out.print("catagory 3");
+				System.out.print("\ncatagory "+input.type+" prediction: 3");
+				if(input.type == 3) {
+					correct ++;
+					System.out.print(" correct");
+				}else
+					System.out.print(" wrong");
 			}
+			if(count == 177)
+				break;
 		}
+		System.out.println("\nAccuracy = "+ ((double)correct/count));
 	}
 	
 
@@ -200,3 +263,5 @@ public class Driver {
 		return Math.sqrt(sum/(values.size()-1)); 
 	}
 }
+
+

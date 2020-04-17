@@ -1,3 +1,4 @@
+
 public class Probability {
 	double mean;
 	double stdDiv;
@@ -8,6 +9,6 @@ public class Probability {
 	}
 	
 	double probability(double x) {
-		return (1/(stdDiv*Math.sqrt(2*Math.PI))) * Math.exp((-1/2)*((x-mean)/stdDiv));
+		return (1/(stdDiv*Math.sqrt(2*Math.PI))) * Math.exp(Math.pow(((x-mean)/stdDiv),2)*(-1.0/2));
 	}
 }
