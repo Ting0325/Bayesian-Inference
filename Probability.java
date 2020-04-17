@@ -1,4 +1,3 @@
-
 public class Probability {
 	double mean;
 	double stdDiv;

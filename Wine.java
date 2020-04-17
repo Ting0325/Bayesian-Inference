@@ -1,4 +1,3 @@
-
 public class Wine {
 	int type;
 	double Alcohol;
