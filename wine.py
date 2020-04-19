@@ -123,16 +123,13 @@ prior1 = len(type1)/(len(type1)+len(type2)+len(type3))
 prior2 = len(type2)/(len(type1)+len(type2)+len(type3))
 prior3 = len(type3)/(len(type1)+len(type2)+len(type3))
 #spilt data into train and test
-#nms = [[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12]]
-
-f2 = open('test.csv', 'wb')
-
+f2 = open('test.csv', 'w')
 with f2:
 
     writer = csv.writer(f2)
     
     for i in range(18):
-        r = random.randint(0,len(type1))
+        r = random.randint(0,len(type1)-1)
         w = type1.pop(r)
         instance = []
         instance.append(w.catagory)
@@ -151,40 +148,102 @@ with f2:
         instance.append(w.Proline)
         writer.writerow(instance)
     for i in range(18):
+        r = random.randint(0,len(type2)-1)
+        w = type2.pop(r)
         instance = []
-        instance.append(type2[i].catagory)
-        instance.append(type2[i].Alcohol)
-        instance.append(type2[i].Malic)
-        instance.append(type2[i].Ash)
-        instance.append(type2[i].Alcalinity)
-        instance.append(type2[i].Magnesium)
-        instance.append(type2[i].phenols)
-        instance.append(type2[i].Flavanoids)
-        instance.append(type2[i].Nonflavanoid)
-        instance.append(type2[i].Proanthocyanins)
-        instance.append(type2[i].Color)
-        instance.append(type2[i].Hue)
-        instance.append(type2[i].OD280)
-        instance.append(type2[i].Proline)
+        instance.append(w.catagory)
+        instance.append(w.Alcohol)
+        instance.append(w.Malic)
+        instance.append(w.Ash)
+        instance.append(w.Alcalinity)
+        instance.append(w.Magnesium)
+        instance.append(w.phenols)
+        instance.append(w.Flavanoids)
+        instance.append(w.Nonflavanoid)
+        instance.append(w.Proanthocyanins)
+        instance.append(w.Color)
+        instance.append(w.Hue)
+        instance.append(w.OD280)
+        instance.append(w.Proline)
         writer.writerow(instance)
     for i in range(18):
+        r = random.randint(0,len(type3)-1)
+        w = type3.pop(r)
         instance = []
-        instance.append(type3[i].catagory)
-        instance.append(type3[i].Alcohol)
-        instance.append(type3[i].Malic)
-        instance.append(type3[i].Ash)
-        instance.append(type3[i].Alcalinity)
-        instance.append(type3[i].Magnesium)
-        instance.append(type3[i].phenols)
-        instance.append(type3[i].Flavanoids)
-        instance.append(type3[i].Nonflavanoid)
-        instance.append(type3[i].Proanthocyanins)
-        instance.append(type3[i].Color)
-        instance.append(type3[i].Hue)
-        instance.append(type3[i].OD280)
-        instance.append(type3[i].Proline)
+        instance.append(w.catagory)
+        instance.append(w.Alcohol)
+        instance.append(w.Malic)
+        instance.append(w.Ash)
+        instance.append(w.Alcalinity)
+        instance.append(w.Magnesium)
+        instance.append(w.phenols)
+        instance.append(w.Flavanoids)
+        instance.append(w.Nonflavanoid)
+        instance.append(w.Proanthocyanins)
+        instance.append(w.Color)
+        instance.append(w.Hue)
+        instance.append(w.OD280)
+        instance.append(w.Proline)
         writer.writerow(instance)
+f2 = open('train.csv', 'w')
+with f2:
 
+    writer = csv.writer(f2)
+    
+    for i in range(len(type1)):
+        w = type1[i]
+        instance = []
+        instance.append(w.catagory)
+        instance.append(w.Alcohol)
+        instance.append(w.Malic)
+        instance.append(w.Ash)
+        instance.append(w.Alcalinity)
+        instance.append(w.Magnesium)
+        instance.append(w.phenols)
+        instance.append(w.Flavanoids)
+        instance.append(w.Nonflavanoid)
+        instance.append(w.Proanthocyanins)
+        instance.append(w.Color)
+        instance.append(w.Hue)
+        instance.append(w.OD280)
+        instance.append(w.Proline)
+        writer.writerow(instance)
+    for i in range(len(type2)):
+        w = type2[i]
+        instance = []
+        instance.append(w.catagory)
+        instance.append(w.Alcohol)
+        instance.append(w.Malic)
+        instance.append(w.Ash)
+        instance.append(w.Alcalinity)
+        instance.append(w.Magnesium)
+        instance.append(w.phenols)
+        instance.append(w.Flavanoids)
+        instance.append(w.Nonflavanoid)
+        instance.append(w.Proanthocyanins)
+        instance.append(w.Color)
+        instance.append(w.Hue)
+        instance.append(w.OD280)
+        instance.append(w.Proline)
+        writer.writerow(instance)
+    for i in range(len(type3)):
+        w = type3[i]
+        instance = []
+        instance.append(w.catagory)
+        instance.append(w.Alcohol)
+        instance.append(w.Malic)
+        instance.append(w.Ash)
+        instance.append(w.Alcalinity)
+        instance.append(w.Magnesium)
+        instance.append(w.phenols)
+        instance.append(w.Flavanoids)
+        instance.append(w.Nonflavanoid)
+        instance.append(w.Proanthocyanins)
+        instance.append(w.Color)
+        instance.append(w.Hue)
+        instance.append(w.OD280)
+        instance.append(w.Proline)
+        writer.writerow(instance)
 #get probability distributions (Normal)
 for i in range(1,14):
     data = substanceData(type1, i, 0, len(type1)-1)
@@ -205,7 +264,7 @@ for i in range(1,14):
 print('start inference input data')
 correct = 0
 count = 0
-f = open('Wine.csv', 'r')
+f = open('test.csv', 'r')
 with f:
 
     reader = csv.reader(f,quoting=csv.QUOTE_NONNUMERIC)
@@ -222,20 +281,46 @@ with f:
         if prior1 > prior2 and prior1 > prior3:
             if row[0] == 1:
                 correct += 1
-                print('correct')
+                print("actual: {} classified as {} correct".format(row[0],1))
             else:
-                print('wrong')
+                print("actual: {} classified as {} wrong".format(row[0],1))
         elif prior2 > prior1 and prior2 > prior3:
             if row[0] == 2:
                 correct += 1
-                print('correct')
+                print("actual: {} classified as {} correct".format(row[0],2))
             else:
-                print('wrong')
+                print("actual: {} classified as {} wrong".format(row[0],2))
         else:
             if row[0] == 3:
                 correct += 1
-                print('correct')
+                print("actual: {} classified as {} correct".format(row[0],3))
             else:
-                print('wrong')
+                print("actual: {} classified as {} wrong".format(row[0],3))
 accuracy = correct/count
 print("accuracy = {}".format(accuracy))
+
+#plot figures
+import matplotlib.pyplot as plt
+import numpy as np
+import scipy.stats as stats
+mu = type1_prob[0].mean
+variance = type1_prob[0].stdDiv**2
+sigma = type1_prob[0].stdDiv
+x = np.linspace(mu - 3*sigma, mu + 3*sigma, 100)
+plt.plot(x, stats.norm.pdf(x, mu, sigma),label = "prior")
+
+mu = type1_prob[1].mean
+variance = type1_prob[1].stdDiv**2
+sigma = type1_prob[1].stdDiv
+x = np.linspace(mu - 3*sigma, mu + 3*sigma, 100)
+plt.plot(x, stats.norm.pdf(x, mu, sigma),label = "likelihood")
+
+mu = (type1_prob[1].mean*(type1_prob[0].stdDiv)**2+type1_prob[0].mean*(type1_prob[1].stdDiv)**2)/((type1_prob[0].stdDiv)**2+(type1_prob[1].stdDiv)**2)
+variance = (math.sqrt(((type1_prob[1].stdDiv**2)*(type1_prob[0].stdDiv**2))/((type1_prob[1].stdDiv**2)+(type1_prob[0].stdDiv**2))))**2
+sigma = (math.sqrt(((type1_prob[1].stdDiv**2)*(type1_prob[0].stdDiv**2))/((type1_prob[1].stdDiv**2)+(type1_prob[0].stdDiv**2))))
+x = np.linspace(mu - 3*sigma, mu + 3*sigma, 100)
+plt.plot(x, stats.norm.pdf(x, mu, sigma),label = "posterior")
+plt.xlabel('x')
+plt.ylabel('Normal Distribution')
+plt.legend()
+plt.show()
