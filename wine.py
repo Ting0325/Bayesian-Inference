@@ -1,25 +1,10 @@
 import csv
 import math
-f = open('Wine.csv', 'r')
+import random
+
 
 class Wine:  
-    '''
-    catagory
-    Alcohol
-    Malic
-    Ash
-    Alcalinity
-    Magnesium
-    phenols
-    Flavanoids
-    Nonflavanoid
-    Proanthocyanins
-    Color
-    Hue
-    OD280
-    Proline  
-    ''' 
-    # init method or constructor   
+
     def __init__(self, catagory, Alcohol, Malic, Ash, Alcalinity, Magnesium, phenols, Flavanoids, Nonflavanoid, Proanthocyanins, Color, Hue, OD280, Proline):  
         self.catagory = catagory
         self.Alcohol = Alcohol
@@ -36,32 +21,18 @@ class Wine:
         self.OD280 = OD280
         self.Proline = Proline
     
-    # Sample Method   
-    def say_hi(self):  
-        print('Hello, my name is')  
-'''    
-p = Wine('Nikhil')  
-p.say_hi()  
-
-'''
- 
 class Probability:  
     mean = 0
     stdDiv = 0
-    # init method or constructor   
     def __init__(self, mean,  stdDiv):  
         self.mean = mean
         self.stdDiv = stdDiv
 
     
-    # Sample Method   
     def probability(self,x):  
-        return (1.0/(self.stdDiv*math.sqrt(2*math.pi))) * math.exp(pow(((x-self.mean)/self.stdDiv),2)*(-1.0/2))
-'''    
-p = Wine('Nikhil')  
-p.say_hi()  
+        return (1.0/(self.stdDiv*math.sqrt(2*math.pi))) * math.exp((-1.0/2)*((x-self.mean)/self.stdDiv)**2)
 
-'''
+
 def substanceData(data, substance, start, end):
     subData = []
     if substance == 1:
@@ -110,18 +81,26 @@ def getMean(values):
     for i in range(0,len(values)):
         mean += values[i]
     return mean/len(values)
+
 def getStdDiv(values):
     mean = getMean(values)
     sum = 0
     for i in range(0,len(values)):
-        sum += (values[i] - mean)**2 #* (values.get[i]] - mean);
-    return mean/len(values)
+        sum += (values[i] - mean)**2
+    return math.sqrt(sum/(len(values)-1))
+
+
+#main code starts here
+#list of wine instances
 type1 = []
 type2 = []
 type3 = []
+#list of normal distribution instances
 type1_prob = []
 type2_prob = []
 type3_prob = []
+
+#read in entire data set
 f = open('Wine.csv', 'r')
 with f:
 
@@ -135,26 +114,31 @@ with f:
           type2.append(wine)
         else:
           type3.append(wine)
-
-        #print(row)
+'''
 prior1 = 59.0/178
 prior2 = 71.0/178
 prior3 = 47.0/178
-
-# get joint probilities
+'''
+prior1 = len(type1)/(len(type1)+len(type2)+len(type3))
+prior2 = len(type2)/(len(type1)+len(type2)+len(type3))
+prior3 = len(type3)/(len(type1)+len(type2)+len(type3))
+# get probability distributions (Normal)
 for i in range(1,14):
     data = substanceData(type1, i, 0, len(type1)-1)
-    #print(len(data))
     p = Probability(getMean(data),getStdDiv(data))
     type1_prob.append(p)
+    
 for i in range(1,14):
     data = substanceData(type2, i, 0, len(type2)-1)
     p = Probability(getMean(data),getStdDiv(data))
     type2_prob.append(p)
+    
 for i in range(1,14):
     data = substanceData(type3, i, 0, len(type3)-1)
     p = Probability(getMean(data),getStdDiv(data))
     type3_prob.append(p)
+    
+#start inference
 print('start inference input data')
 correct = 0
 count = 0
@@ -164,17 +148,14 @@ with f:
     reader = csv.reader(f,quoting=csv.QUOTE_NONNUMERIC)
     
     for row in reader:
-        count += 1
+        count += 1.0
         prior1 = 59.0/178
         prior2 = 71.0/178
         prior3 = 47.0/178
-        #wine = Wine(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10],row[11],row[12],row[13])
-        for i in range(13):
-            prior1 *= type1_prob[i].probability(row[i])
-            prior2 *= type2_prob[i].probability(row[i])
-            prior3 *= type3_prob[i].probability(row[i])
-            print(type1_prob[i].probability(row[i]))
-
+        for i in range(1,14):
+            prior1 *= type1_prob[i-1].probability(x=row[i])
+            prior2 *= type2_prob[i-1].probability(x=row[i])
+            prior3 *= type3_prob[i-1].probability(x=row[i])
         if prior1 > prior2 and prior1 > prior3:
             if row[0] == 1:
                 correct += 1
@@ -193,4 +174,5 @@ with f:
                 print('correct')
             else:
                 print('wrong')
-print('accuracy : ' ,correct/count)
+accuracy = correct/count
+print("accuracy = {}".format(accuracy))
