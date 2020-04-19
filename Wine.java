@@ -32,7 +32,8 @@ public class Wine {
 	}
 	
 	public String toString() {
-		String str = String.format("type = %d, Alcohol, Malic, Ash, Alcalinity, Magnesium, phenols, Flavanoids, Nonflavanoid, Proanthocyanins, Color, Hue, OD280, Proline\n", type);
+		String str = String.format("type = %d, Alcohol = %f, Malic = %f, Ash = %f, Alcalinity = %f, Magnesium = %f, phenols = %f, Flavanoids = %f, Nonflavanoid = %f Proanthocyanins = %f, Color = %f, Hue = %f, OD280 = %f, Proline = %f\n",
+				type  ,Alcohol, Malic, Ash, Alcalinity, Magnesium, phenols, Flavanoids, Nonflavanoid, Proanthocyanins, Color, Hue, OD280, Proline);
 		return str;
 	}
 }
