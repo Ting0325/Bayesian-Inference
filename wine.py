@@ -122,7 +122,70 @@ prior3 = 47.0/178
 prior1 = len(type1)/(len(type1)+len(type2)+len(type3))
 prior2 = len(type2)/(len(type1)+len(type2)+len(type3))
 prior3 = len(type3)/(len(type1)+len(type2)+len(type3))
-# get probability distributions (Normal)
+#spilt data into train and test
+#nms = [[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12]]
+
+f2 = open('test.csv', 'wb')
+
+with f2:
+
+    writer = csv.writer(f2)
+    
+    for i in range(18):
+        r = random.randint(0,len(type1))
+        w = type1.pop(r)
+        instance = []
+        instance.append(w.catagory)
+        instance.append(w.Alcohol)
+        instance.append(w.Malic)
+        instance.append(w.Ash)
+        instance.append(w.Alcalinity)
+        instance.append(w.Magnesium)
+        instance.append(w.phenols)
+        instance.append(w.Flavanoids)
+        instance.append(w.Nonflavanoid)
+        instance.append(w.Proanthocyanins)
+        instance.append(w.Color)
+        instance.append(w.Hue)
+        instance.append(w.OD280)
+        instance.append(w.Proline)
+        writer.writerow(instance)
+    for i in range(18):
+        instance = []
+        instance.append(type2[i].catagory)
+        instance.append(type2[i].Alcohol)
+        instance.append(type2[i].Malic)
+        instance.append(type2[i].Ash)
+        instance.append(type2[i].Alcalinity)
+        instance.append(type2[i].Magnesium)
+        instance.append(type2[i].phenols)
+        instance.append(type2[i].Flavanoids)
+        instance.append(type2[i].Nonflavanoid)
+        instance.append(type2[i].Proanthocyanins)
+        instance.append(type2[i].Color)
+        instance.append(type2[i].Hue)
+        instance.append(type2[i].OD280)
+        instance.append(type2[i].Proline)
+        writer.writerow(instance)
+    for i in range(18):
+        instance = []
+        instance.append(type3[i].catagory)
+        instance.append(type3[i].Alcohol)
+        instance.append(type3[i].Malic)
+        instance.append(type3[i].Ash)
+        instance.append(type3[i].Alcalinity)
+        instance.append(type3[i].Magnesium)
+        instance.append(type3[i].phenols)
+        instance.append(type3[i].Flavanoids)
+        instance.append(type3[i].Nonflavanoid)
+        instance.append(type3[i].Proanthocyanins)
+        instance.append(type3[i].Color)
+        instance.append(type3[i].Hue)
+        instance.append(type3[i].OD280)
+        instance.append(type3[i].Proline)
+        writer.writerow(instance)
+
+#get probability distributions (Normal)
 for i in range(1,14):
     data = substanceData(type1, i, 0, len(type1)-1)
     p = Probability(getMean(data),getStdDiv(data))
